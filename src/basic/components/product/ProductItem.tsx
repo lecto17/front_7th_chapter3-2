@@ -6,7 +6,7 @@ import {
   formatPrice,
   getRemainingStock,
 } from "../../utils/utils";
-import AddToCartButton from "../cart/button/AddToCartButton";
+import AddToCartButton from "./AddToCartButton";
 
 export default function ProductItem({ product }: { product: ProductWithUI }) {
   const { cart } = useCarts();
