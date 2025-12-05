@@ -1,15 +1,20 @@
-import { create } from "zustand";
+import { StateCreator } from "zustand";
 import { Notification, NotificationType } from "../../lib/types";
 import { NOTIFICATION_DURATION } from "../../lib/constants";
 
-interface NotificationState {
+export interface NotificationSlice {
   notifications: Notification[];
   addNotification: (message: string, type?: NotificationType) => void;
   removeNotification: (id: string) => void;
   clearNotifications: () => void;
 }
 
-export const useNotificationStore = create<NotificationState>((set) => ({
+export const createNotificationSlice: StateCreator<
+  NotificationSlice,
+  [],
+  [],
+  NotificationSlice
+> = (set) => ({
   notifications: [],
   addNotification: (message: string, type: NotificationType = "success") => {
     const id = Date.now().toString();
@@ -31,4 +36,4 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   clearNotifications: () => {
     set({ notifications: [] });
   },
-}));
+});

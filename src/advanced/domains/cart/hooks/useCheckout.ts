@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { useCartStore } from "../store/cartStore";
-import { useNotificationStore } from "../../../shared/stores/notificationStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useCheckout() {
-  const { clearCart, clearCoupon } = useCartStore();
-  const { addNotification } = useNotificationStore();
+  const clearCart = useStore((state) => state.clearCart);
+  const clearCoupon = useStore((state) => state.clearCoupon);
+  const addNotification = useStore((state) => state.addNotification);
 
   const handleCheckout = useCallback(() => {
     const orderNumber = `ORD-${Date.now()}`;

@@ -1,7 +1,8 @@
-import { useProductStore } from "../store/productStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useProducts() {
-  const { products, setProducts } = useProductStore();
+  const products = useStore((state) => state.products);
+  const setProducts = useStore((state) => state.setProducts);
 
   return {
     products,

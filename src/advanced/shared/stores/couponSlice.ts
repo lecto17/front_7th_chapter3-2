@@ -1,15 +1,20 @@
-import { create } from "zustand";
-import { Coupon } from "../../../../types";
-import { INITIAL_COUPONS, STORAGE_KEYS } from "../../../lib/constants";
-import { useNotificationStore } from "../../../shared/stores/notificationStore";
+import { StateCreator } from "zustand";
+import { Coupon } from "../../lib/types";
+import { INITIAL_COUPONS, STORAGE_KEYS } from "../../lib/constants";
+import { NotificationSlice } from "./notificationSlice";
 
-interface CouponState {
+export interface CouponSlice {
   coupons: Coupon[];
   addCoupon: (newCoupon: Coupon) => void;
   deleteCoupon: (couponCode: string) => void;
 }
 
-export const useCouponStore = create<CouponState>((set, get) => ({
+export const createCouponSlice: StateCreator<
+  CouponSlice & NotificationSlice,
+  [],
+  [],
+  CouponSlice
+> = (set, get) => ({
   coupons: (() => {
     const saved = localStorage.getItem(STORAGE_KEYS.COUPONS);
     if (saved) {
@@ -23,8 +28,7 @@ export const useCouponStore = create<CouponState>((set, get) => ({
   })(),
 
   addCoupon: (newCoupon: Coupon) => {
-    const { coupons } = get();
-    const { addNotification } = useNotificationStore.getState();
+    const { coupons, addNotification } = get();
 
     const existingCoupon = coupons.find((c) => c.code === newCoupon.code);
     if (existingCoupon) {
@@ -45,4 +49,4 @@ export const useCouponStore = create<CouponState>((set, get) => ({
       return { coupons: newCoupons };
     });
   },
-}));
+});

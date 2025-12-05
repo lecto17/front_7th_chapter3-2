@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useCartStore } from "../../../domains/cart/store/cartStore";
+import { useStore } from "../../stores/store";
 
 interface HeaderProps {
   isAdmin: boolean;
@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 export function Header({ isAdmin, onToggleAdmin, searchSlot }: HeaderProps) {
-  const { cart } = useCartStore();
+  const cart = useStore((state) => state.cart);
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (

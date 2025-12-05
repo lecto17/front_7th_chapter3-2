@@ -1,13 +1,13 @@
 import { useState, useCallback } from "react";
 import { CouponFormData } from "../../coupon/schemas/couponSchemas";
-import { useCouponStore } from "../../coupon/store/couponStore";
-import { useCartStore } from "../../cart/store/cartStore";
-import { useNotificationStore } from "../../../shared/stores/notificationStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useCouponManagement() {
-  const { addCoupon, deleteCoupon } = useCouponStore();
-  const { selectedCoupon, clearCoupon } = useCartStore();
-  const { addNotification } = useNotificationStore();
+  const addCoupon = useStore((state) => state.addCoupon);
+  const deleteCoupon = useStore((state) => state.deleteCoupon);
+  const selectedCoupon = useStore((state) => state.selectedCoupon);
+  const clearCoupon = useStore((state) => state.clearCoupon);
+  const addNotification = useStore((state) => state.addNotification);
 
   const [showCouponForm, setShowCouponForm] = useState(false);
 
@@ -37,7 +37,7 @@ export function useCouponManagement() {
       // Better: Update store to return boolean or promise.
       // Since I can't easily update store right now without another tool call, I'll check duplicates here using store state.
 
-      const { coupons } = useCouponStore.getState();
+      const { coupons } = useStore.getState();
       const existingCoupon = coupons.find((c) => c.code === data.code);
       if (existingCoupon) {
         addNotification("이미 존재하는 쿠폰 코드입니다.", "error");

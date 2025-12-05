@@ -1,11 +1,11 @@
-import { create } from "zustand";
-import { CartItem, Coupon } from "../../../../types";
-import { ProductWithUI, STORAGE_KEYS } from "../../../lib/constants";
-import { getRemainingStock } from "../../product/utils/productUtils";
-import { useNotificationStore } from "../../../shared/stores/notificationStore";
-import { useProductStore } from "../../product/store/productStore";
+import { StateCreator } from "zustand";
+import { CartItem, Coupon } from "../../lib/types";
+import { ProductWithUI, STORAGE_KEYS } from "../../lib/constants";
+import { getRemainingStock } from "../../domains/product/utils/productUtils";
+import { NotificationSlice } from "./notificationSlice";
+import { ProductSlice } from "./productSlice";
 
-interface CartState {
+export interface CartSlice {
   cart: CartItem[];
   selectedCoupon: Coupon | null;
   addToCart: (product: ProductWithUI) => void;
@@ -17,7 +17,12 @@ interface CartState {
   calculateTotal: () => number;
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
+export const createCartSlice: StateCreator<
+  CartSlice & ProductSlice & NotificationSlice,
+  [],
+  [],
+  CartSlice
+> = (set, get) => ({
   cart: (() => {
     const saved = localStorage.getItem(STORAGE_KEYS.CART);
     if (saved) {
@@ -32,8 +37,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   selectedCoupon: null,
 
   addToCart: (product: ProductWithUI) => {
-    const { cart } = get();
-    const { addNotification } = useNotificationStore.getState();
+    const { cart, addNotification } = get();
 
     const remainingStock = getRemainingStock(product, cart);
     if (remainingStock <= 0) {
@@ -77,9 +81,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   updateQuantity: (productId: string, newQuantity: number) => {
-    const { cart, removeFromCart } = get();
-    const { products } = useProductStore.getState();
-    const { addNotification } = useNotificationStore.getState();
+    const { cart, removeFromCart, products, addNotification } = get();
 
     if (newQuantity <= 0) {
       removeFromCart(productId);
@@ -123,4 +125,4 @@ export const useCartStore = create<CartState>((set, get) => ({
       0
     );
   },
-}));
+});

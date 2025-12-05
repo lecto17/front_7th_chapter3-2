@@ -1,12 +1,12 @@
 import { useState, useCallback } from "react";
 import { ProductWithUI } from "../../../lib/constants";
 import { ProductFormData } from "../schemas/productSchemas";
-import { useProductStore } from "../../product/store/productStore";
-import { useNotificationStore } from "../../../shared/stores/notificationStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useProductManagement() {
-  const { products, setProducts } = useProductStore();
-  const { addNotification } = useNotificationStore();
+  const products = useStore((state) => state.products);
+  const setProducts = useStore((state) => state.setProducts);
+  const addNotification = useStore((state) => state.addNotification);
 
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [showProductForm, setShowProductForm] = useState(false);

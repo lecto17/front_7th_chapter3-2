@@ -1,8 +1,9 @@
 import { cn } from "../../lib/cn";
-import { useNotificationStore } from "../stores/notificationStore";
+import { useStore } from "../stores/store";
 
 export function Notification() {
-  const { notifications, removeNotification } = useNotificationStore();
+  const notifications = useStore((state) => state.notifications);
+  const removeNotification = useStore((state) => state.removeNotification);
 
   if (notifications.length === 0) return null;
 

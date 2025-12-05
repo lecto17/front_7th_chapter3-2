@@ -5,10 +5,11 @@ import {
   BULK_PURCHASE_BONUS_RATE,
   MAX_DISCOUNT_RATE,
 } from "../../../lib/constants";
-import { useCartStore } from "../store/cartStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useCartCalculations() {
-  const { cart, selectedCoupon } = useCartStore();
+  const cart = useStore((state) => state.cart);
+  const selectedCoupon = useStore((state) => state.selectedCoupon);
 
   const getMaxApplicableDiscount = (item: CartItem): number => {
     const { discounts } = item.product;

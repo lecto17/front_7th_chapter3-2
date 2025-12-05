@@ -1,11 +1,11 @@
-import { create } from "zustand";
+import { StateCreator } from "zustand";
 import {
   ProductWithUI,
   INITIAL_PRODUCTS,
   STORAGE_KEYS,
-} from "../../../lib/constants";
+} from "../../lib/constants";
 
-interface ProductState {
+export interface ProductSlice {
   products: ProductWithUI[];
   searchTerm: string;
   setProducts: (
@@ -14,7 +14,12 @@ interface ProductState {
   setSearchTerm: (term: string) => void;
 }
 
-export const useProductStore = create<ProductState>((set) => ({
+export const createProductSlice: StateCreator<
+  ProductSlice,
+  [],
+  [],
+  ProductSlice
+> = (set) => ({
   products: (() => {
     const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
     if (saved) {
@@ -41,4 +46,4 @@ export const useProductStore = create<ProductState>((set) => ({
   setSearchTerm: (term: string) => {
     set({ searchTerm: term });
   },
-}));
+});

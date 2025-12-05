@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { SEARCH_DEBOUNCE_DELAY } from "../../../lib/constants";
-import { useProductStore } from "../store/productStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function useProductSearch() {
-  const { products, searchTerm, setSearchTerm } = useProductStore();
+  const products = useStore((state) => state.products);
+  const searchTerm = useStore((state) => state.searchTerm);
+  const setSearchTerm = useStore((state) => state.setSearchTerm);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   useEffect(() => {

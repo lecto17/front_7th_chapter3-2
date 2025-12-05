@@ -1,8 +1,9 @@
 import { Input } from "../../../shared/components/ui/Input";
-import { useProductStore } from "../store/productStore";
+import { useStore } from "../../../shared/stores/store";
 
 export function ProductSearch() {
-  const { searchTerm, setSearchTerm } = useProductStore();
+  const searchTerm = useStore((state) => state.searchTerm);
+  const setSearchTerm = useStore((state) => state.setSearchTerm);
 
   return (
     <Input
